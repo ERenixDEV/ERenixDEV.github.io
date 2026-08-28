@@ -1,1 +1,2 @@
-BOMB
+EN*UI
+#INFO
