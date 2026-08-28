@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <link rel="icon" type="image/x-icon" href="favicon.ico" />
+    <meta property="og:image" content="https://aghodemon.github.io/favicon.ico" />
+    <meta property="og:image:width" content="512" />
+    <meta property="og:image:height" content="512" />
+    <meta name="twitter:image" content="https://aghodemon.github.io/favicon.ico" />
+    <link rel="apple-touch-icon" href="favicon.ico" />
+    <title>⸸ | 𝐙𝐞𝐧𝐨𝐱</title>
+    <meta name="description" content="Senior DevOPS engineer specializing in Java, Node.js, Docker, Python." />
+    <meta name="keywords" content="Zenox, DevOPS, Java, Node.js, Docker, Python" />
+    <meta property="og:title" content="Zenox | Senior DevOPS" />
+    <meta property="og:description" content="Full stack developer & DevOPS engineer." />
+    <meta property="og:url" content="https://aghodemon.github.io" />
+    <meta name="robots" content="index, follow" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:title" content="Zenox | Senior DevOPS" />
+    <meta name="twitter:description" content="Senior DevOPS engineer - Java, Node.js, Docker, Python" />
+    <link rel="canonical" href="https://aghodemon.github.io" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #0a0c12;
+            color: #d0d8e2;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            line-height: 1.6;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 12px;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(circle at 18% 15%, rgba(60, 90, 130, 0.35), transparent 45%),
+                radial-gradient(circle at 85% 20%, rgba(90, 60, 130, 0.25), transparent 45%),
+                radial-gradient(circle at 50% 100%, rgba(30, 50, 80, 0.4), transparent 55%),
+                linear-gradient(160deg, #0a0c12 0%, #10131c 45%, #0a0c12 100%);
+            animation: floatBg 30s ease-in-out infinite alternate;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        @keyframes floatBg {
+            0% { transform: scale(1) rotate(0deg); }
+            100% { transform: scale(1.12) rotate(2deg); }
+        }
+
+        ::selection {
+            background: #7a8a9a;
+            color: #0a0c12;
+        }
+
+        ::-webkit-scrollbar {
+            width: 4px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #141a24;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #3a4454;
+            border-radius: 4px;
+        }
+
+        .glass-wrapper {
+            position: relative;
+            z-index: 1;
+            width: min(94vw, 450px);
+        }
+
+        .glass-container {
+            position: relative;
+            background: rgba(18, 24, 34, 0.7);
+            backdrop-filter: blur(32px);
+            -webkit-backdrop-filter: blur(32px);
+            border-radius: clamp(16px, 4vw, 24px);
+            padding: clamp(20px, 6vw, 32px) clamp(16px, 5vw, 28px) clamp(22px, 6vw, 34px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            box-shadow: 0 30px 80px rgba(0, 0, 0, 0.7), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+            overflow: visible;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .glass-container::before {
+            content: '';
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            right: -4px;
+            bottom: -4px;
+            background: url('profiledeco.png') center/cover no-repeat;
+            background-size: 100% 100%;
+            opacity: 0.85;
+            z-index: -1;
+            pointer-events: none;
+            border-radius: clamp(18px, 4.5vw, 28px);
+            animation: pulseBorder 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulseBorder {
+            0% { opacity: 0.7; transform: scale(0.99); }
+            100% { opacity: 1; transform: scale(1.01); }
+        }
+
+        .glass-container::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(ellipse at 50% 0%, rgba(255,255,255,0.02) 0%, transparent 70%);
+            pointer-events: none;
+            border-radius: 24px;
+            z-index: 0;
+        }
+
+        .profile-section {
+            text-align: center;
+            margin-bottom: clamp(16px, 5vw, 22px);
+            margin-top: clamp(10px, 3vw, 16px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .avatar-container {
+            --avatar-size: clamp(64px, 18vw, 80px);
+            position: relative;
+            width: var(--avatar-size);
+            height: var(--avatar-size);
+            margin: 0 auto clamp(14px, 4vw, 18px);
+            overflow: visible;
+        }
+
+        .avatar-ring {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #2a3444, #1a222e);
+            padding: 3px;
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+            z-index: 1;
+        }
+
+        .avatar-ring img {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            display: block;
+            object-fit: cover;
+            background: #0a0c12;
+        }
+
+        .avatar-glow {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: calc(var(--avatar-size) * 1.3);
+            height: calc(var(--avatar-size) * 1.3);
+            transform: translate(-50%, -50%);
+            pointer-events: none;
+            z-index: 2;
+            opacity: 1;
+            animation: decoFloat 3s ease-in-out infinite alternate;
+        }
+
+        @keyframes decoFloat {
+            0% { transform: translate(-50%, -50%) scale(0.98); }
+            100% { transform: translate(-50%, -50%) scale(1.03); }
+        }
+
+        .avatar-glow img {
+            width: 100%;
+            height: 100%;
+            display: block;
+            object-fit: contain;
+        }
+
+        .profile-name {
+            font-size: clamp(24px, 7vw, 32px);
+            font-weight: 700;
+            color: #ece8e0;
+            letter-spacing: -0.3px;
+            margin-bottom: 6px;
+        }
+
+        .role-tag {
+            display: inline-block;
+            background: rgba(26, 34, 46, 0.7);
+            border: 1px solid rgba(42, 52, 68, 0.5);
+            padding: clamp(6px, 1.5vw, 8px) clamp(24px, 6vw, 36px);
+            border-radius: 30px;
+            font-size: clamp(13px, 3.2vw, 16px);
+            font-weight: 600;
+            color: #b0c8de;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            backdrop-filter: blur(4px);
+            margin: 4px auto;
+            box-shadow: 0 0 30px rgba(60, 100, 160, 0.1);
+        }
+
+        .divider {
+            height: 1px;
+            background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.06), transparent);
+            margin: clamp(14px, 4vw, 18px) 0 clamp(16px, 5vw, 22px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .music-player {
+            background: rgba(18, 24, 34, 0.5);
+            border: 1px solid rgba(42, 52, 68, 0.3);
+            border-radius: 16px;
+            padding: 14px 16px 12px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            backdrop-filter: blur(4px);
+            position: relative;
+            z-index: 1;
+        }
+
+        .music-top {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .music-cover {
+            width: 52px;
+            height: 52px;
+            border-radius: 10px;
+            background: #1e2634;
+            flex-shrink: 0;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .music-cover img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+
+        .music-info {
+            flex: 1;
+            min-width: 80px;
+        }
+
+        .music-title {
+            font-size: clamp(13px, 3.4vw, 15px);
+            font-weight: 600;
+            color: #d8e0ea;
+            letter-spacing: 0.2px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .music-artist {
+            font-size: clamp(10px, 2.5vw, 11px);
+            color: #7a8a9a;
+            font-weight: 400;
+        }
+
+        .music-controls {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            flex-shrink: 0;
+        }
+
+        .music-btn {
+            background: rgba(26, 34, 46, 0.6);
+            border: none;
+            border-radius: 30px;
+            width: 34px;
+            height: 34px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #b0c0ce;
+            cursor: pointer;
+            transition: all 0.2s;
+            backdrop-filter: blur(4px);
+            border: 1px solid rgba(42, 52, 68, 0.2);
+        }
+
+        .music-btn:hover {
+            background: rgba(42, 52, 68, 0.7);
+            color: #fff;
+            transform: scale(1.05);
+            border-color: rgba(90, 106, 122, 0.4);
+        }
+
+        .music-btn svg {
+            width: 18px;
+            height: 18px;
+            fill: currentColor;
+        }
+
+        .music-progress-wrap {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .music-progress {
+            flex: 1;
+            height: 4px;
+            background: rgba(42, 52, 68, 0.4);
+            border-radius: 4px;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .music-progress-fill {
+            height: 100%;
+            width: 0%;
+            background: linear-gradient(90deg, #5a7a9a, #8a9aaa);
+            border-radius: 4px;
+            transition: width 0.05s linear;
+        }
+
+        .music-time {
+            font-size: 10px;
+            color: #5a6a7a;
+            letter-spacing: 0.3px;
+            font-variant-numeric: tabular-nums;
+            white-space: nowrap;
+            min-width: 75px;
+            text-align: right;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: #3a4a5a;
+            font-size: clamp(8px, 2vw, 9px);
+            padding-top: clamp(14px, 4vw, 20px);
+            letter-spacing: 1.5px;
+            font-weight: 300;
+            margin-top: 6px;
+            border-top: 1px solid rgba(26, 34, 46, 0.4);
+            position: relative;
+            z-index: 1;
+        }
+
+        @media (max-height: 620px) and (max-width: 500px) {
+            body {
+                align-items: flex-start;
+                padding-top: 20px;
+                padding-bottom: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="glass-wrapper">
+        <div class="glass-container">
+
+            <div class="profile-section">
+                <div class="avatar-container">
+                    <div class="avatar-ring">
+                        <img src="profile.png" alt="profile" />
+                    </div>
+                    <div class="avatar-glow">
+                        <img src="animated.png" alt="animated" />
+                    </div>
+                </div>
+                <h1 class="profile-name">Zenox</h1>
+                <div class="role-tag">BOMB OF SUPER APLLICATION</div>
+            </div>
+
+            <div class="divider"></div>
+
+            <div class="music-player">
+                <div class="music-top">
+                    <div class="music-cover">
+                        <img src="1.png" alt="cover" id="albumCover" />
+                    </div>
+                    <div class="music-info">
+                        <div class="music-title" id="trackTitle">Ech of EN*IX</div>
+                        <div class="music-artist" id="trackArtist">Zenox</div>
+                    </div>
+                    <div class="music-controls">
+                        <button class="music-btn" id="prevBtn">
+                            <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
+                        </button>
+                        <button class="music-btn" id="playBtn">
+                            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                        </button>
+                        <button class="music-btn" id="nextBtn">
+                            <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="music-progress-wrap">
+                    <div class="music-progress" id="progressBar">
+                        <div class="music-progress-fill" id="progressFill"></div>
+                    </div>
+                    <span class="music-time" id="timeDisplay">0:09 / 2:27</span>
+                </div>
+            </div>
+
+            <div class="footer-note">
+                Zenox &middot; 18/10/1404
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            const audio = new Audio('1.mp3');
+            const playBtn = document.getElementById('playBtn');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const progressFill = document.getElementById('progressFill');
+            const progressBar = document.getElementById('progressBar');
+            const timeDisplay = document.getElementById('timeDisplay');
+            const trackTitle = document.getElementById('trackTitle');
+            const trackArtist = document.getElementById('trackArtist');
+
+            let isPlaying = false;
+            let trackLoaded = false;
+            let isDragging = false;
+
+            const playlist = [
+                { title: '⸸ | EN*IX', artist: 'Zenox', src: '1.mp3', cover: '1.png' }
+            ];
+            let currentTrackIndex = 0;
+
+            function loadTrack(index) {
+                const track = playlist[index];
+                if (!track) return;
+                audio.src = track.src;
+                audio.load();
+                trackTitle.textContent = track.title;
+                trackArtist.textContent = track.artist;
+                document.getElementById('albumCover').src = track.cover;
+                trackLoaded = false;
+                timeDisplay.textContent = '0:00 / 0:00';
+                progressFill.style.width = '0%';
+                if (isPlaying) {
+                    isPlaying = false;
+                    playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
+                }
+            }
+
+            function formatTime(seconds) {
+                if (isNaN(seconds) || seconds === Infinity || seconds < 0) return '0:00';
+                const m = Math.floor(seconds / 60);
+                const s = Math.floor(seconds % 60);
+                return `${m}:${s.toString().padStart(2, '0')}`;
+            }
+
+            function updateProgress() {
+                if (isDragging) return;
+                if (trackLoaded && audio.duration && !isNaN(audio.duration) && isFinite(audio.duration)) {
+                    const pct = (audio.currentTime / audio.duration) * 100;
+                    progressFill.style.width = Math.min(pct, 100) + '%';
+                    timeDisplay.textContent = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
+                }
+            }
+
+            function togglePlay() {
+                if (!trackLoaded) {
+                    audio.load();
+                    return;
+                }
+
+                if (audio.paused) {
+                    audio.play().then(() => {
+                        playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+                        isPlaying = true;
+                    }).catch(() => {
+                        playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
+                        isPlaying = false;
+                    });
+                } else {
+                    audio.pause();
+                    playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
+                    isPlaying = false;
+                }
+            }
+
+            audio.addEventListener('timeupdate', updateProgress);
+
+            audio.addEventListener('loadedmetadata', function() {
+                trackLoaded = true;
+                if (audio.duration && isFinite(audio.duration)) {
+                    timeDisplay.textContent = '0:00 / ' + formatTime(audio.duration);
+                }
+            });
+
+            audio.addEventListener('ended', function() {
+                playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
+                isPlaying = false;
+                progressFill.style.width = '0%';
+                if (trackLoaded && audio.duration && isFinite(audio.duration)) {
+                    timeDisplay.textContent = '0:00 / ' + formatTime(audio.duration);
+                }
+                audio.currentTime = 0;
+            });
+
+            audio.addEventListener('error', function() {
+                trackLoaded = false;
+                timeDisplay.textContent = '0:00 / 0:00';
+            });
+
+            playBtn.addEventListener('click', togglePlay);
+
+            function prevTrack() {
+                currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+                loadTrack(currentTrackIndex);
+                setTimeout(() => {
+                    if (trackLoaded) {
+                        audio.play().catch(() => {});
+                        playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+                        isPlaying = true;
+                    }
+                }, 300);
+            }
+
+            function nextTrack() {
+                currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+                loadTrack(currentTrackIndex);
+                setTimeout(() => {
+                    if (trackLoaded) {
+                        audio.play().catch(() => {});
+                        playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+                        isPlaying = true;
+                    }
+                }, 300);
+            }
+
+            prevBtn.addEventListener('click', prevTrack);
+            nextBtn.addEventListener('click', nextTrack);
+
+            progressBar.addEventListener('mousedown', function(e) {
+                if (!trackLoaded) return;
+                isDragging = true;
+                const rect = progressBar.getBoundingClientRect();
+                const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+                if (audio.duration && isFinite(audio.duration)) {
+                    audio.currentTime = x * audio.duration;
+                    updateProgress();
+                }
+            });
+
+            window.addEventListener('mousemove', function(e) {
+                if (!isDragging || !trackLoaded) return;
+                const rect = progressBar.getBoundingClientRect();
+                const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+                if (audio.duration && isFinite(audio.duration)) {
+                    audio.currentTime = x * audio.duration;
+                    updateProgress();
+                }
+            });
+
+            window.addEventListener('mouseup', function() {
+                isDragging = false;
+            });
+
+            progressBar.addEventListener('touchstart', function(e) {
+                if (!trackLoaded) return;
+                isDragging = true;
+                const rect = progressBar.getBoundingClientRect();
+                const touch = e.touches[0];
+                const x = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
+                if (audio.duration && isFinite(audio.duration)) {
+                    audio.currentTime = x * audio.duration;
+                    updateProgress();
+                }
+            });
+
+            progressBar.addEventListener('touchmove', function(e) {
+                e.preventDefault();
+                if (!isDragging || !trackLoaded) return;
+                const rect = progressBar.getBoundingClientRect();
+                const touch = e.touches[0];
+                const x = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
+                if (audio.duration && isFinite(audio.duration)) {
+                    audio.currentTime = x * audio.duration;
+                    updateProgress();
+                }
+            });
+
+            progressBar.addEventListener('touchend', function() {
+                isDragging = false;
+            });
+
+            loadTrack(0);
+        })();
+    </script>
+
+</body>
+</html>
