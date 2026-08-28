@@ -441,7 +441,7 @@
 
     <script>
         (function() {
-            const audio = new Audio('1.mp3');
+            const audio = new Audio();
             const playBtn = document.getElementById('playBtn');
             const prevBtn = document.getElementById('prevBtn');
             const nextBtn = document.getElementById('nextBtn');
@@ -450,31 +450,53 @@
             const timeDisplay = document.getElementById('timeDisplay');
             const trackTitle = document.getElementById('trackTitle');
             const trackArtist = document.getElementById('trackArtist');
+            const albumCover = document.getElementById('albumCover');
 
             let isPlaying = false;
             let trackLoaded = false;
             let isDragging = false;
-
-            const playlist = [
-                { title: '⸸ | EN*IX', artist: 'Zenox', src: '1.mp3', cover: '1.png' }
-            ];
             let currentTrackIndex = 0;
+            let playlist = [];
+
+            function detectTracks() {
+                let index = 1;
+                function check() {
+                    const testAudio = new Audio();
+                    testAudio.preload = 'metadata';
+                    testAudio.src = index + '.mp3';
+                    testAudio.addEventListener('loadedmetadata', function() {
+                        playlist.push({
+                            title: 'THEEn8Ix' + '.playlist',
+                            artist: 'Zenox',
+                            src: index + '.mp3',
+                            cover: '1.png'
+                        });
+                        index++;
+                        check();
+                    }, { once: true });
+                    testAudio.addEventListener('error', function() {
+                        if (playlist.length) {
+                            loadTrack(0);
+                        }
+                    }, { once: true });
+                }
+                check();
+            }
 
             function loadTrack(index) {
                 const track = playlist[index];
                 if (!track) return;
+                currentTrackIndex = index;
                 audio.src = track.src;
                 audio.load();
                 trackTitle.textContent = track.title;
                 trackArtist.textContent = track.artist;
-                document.getElementById('albumCover').src = track.cover;
+                albumCover.src = track.cover;
                 trackLoaded = false;
                 timeDisplay.textContent = '0:00 / 0:00';
                 progressFill.style.width = '0%';
-                if (isPlaying) {
-                    isPlaying = false;
-                    playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
-                }
+                isPlaying = false;
+                playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
             }
 
             function formatTime(seconds) {
@@ -486,7 +508,7 @@
 
             function updateProgress() {
                 if (isDragging) return;
-                if (trackLoaded && audio.duration && !isNaN(audio.duration) && isFinite(audio.duration)) {
+                if (trackLoaded && audio.duration && isFinite(audio.duration)) {
                     const pct = (audio.currentTime / audio.duration) * 100;
                     progressFill.style.width = Math.min(pct, 100) + '%';
                     timeDisplay.textContent = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
@@ -494,19 +516,12 @@
             }
 
             function togglePlay() {
-                if (!trackLoaded) {
-                    audio.load();
-                    return;
-                }
-
+                if (!trackLoaded) return;
                 if (audio.paused) {
                     audio.play().then(() => {
-                        playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
+                        playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h-4V5h4z"/></svg>`;
                         isPlaying = true;
-                    }).catch(() => {
-                        playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
-                        isPlaying = false;
-                    });
+                    }).catch(() => {});
                 } else {
                     audio.pause();
                     playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
@@ -514,23 +529,35 @@
                 }
             }
 
+            function nextTrack() {
+                if (!playlist.length) return;
+                currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+                loadTrack(currentTrackIndex);
+                audio.play().then(() => {
+                    playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h-4V5h4z"/></svg>`;
+                    isPlaying = true;
+                }).catch(() => {});
+            }
+
+            function prevTrack() {
+                if (!playlist.length) return;
+                currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+                loadTrack(currentTrackIndex);
+                audio.play().then(() => {
+                    playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5h-4v14zm8-14v14h4V5h-4z"/></svg>`;
+                    isPlaying = true;
+                }).catch(() => {});
+            }
+
             audio.addEventListener('timeupdate', updateProgress);
 
             audio.addEventListener('loadedmetadata', function() {
                 trackLoaded = true;
-                if (audio.duration && isFinite(audio.duration)) {
-                    timeDisplay.textContent = '0:00 / ' + formatTime(audio.duration);
-                }
+                timeDisplay.textContent = '0:00 / ' + formatTime(audio.duration);
             });
 
             audio.addEventListener('ended', function() {
-                playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
-                isPlaying = false;
-                progressFill.style.width = '0%';
-                if (trackLoaded && audio.duration && isFinite(audio.duration)) {
-                    timeDisplay.textContent = '0:00 / ' + formatTime(audio.duration);
-                }
-                audio.currentTime = 0;
+                nextTrack();
             });
 
             audio.addEventListener('error', function() {
@@ -539,31 +566,6 @@
             });
 
             playBtn.addEventListener('click', togglePlay);
-
-            function prevTrack() {
-                currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
-                loadTrack(currentTrackIndex);
-                setTimeout(() => {
-                    if (trackLoaded) {
-                        audio.play().catch(() => {});
-                        playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
-                        isPlaying = true;
-                    }
-                }, 300);
-            }
-
-            function nextTrack() {
-                currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
-                loadTrack(currentTrackIndex);
-                setTimeout(() => {
-                    if (trackLoaded) {
-                        audio.play().catch(() => {});
-                        playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>`;
-                        isPlaying = true;
-                    }
-                }, 300);
-            }
-
             prevBtn.addEventListener('click', prevTrack);
             nextBtn.addEventListener('click', nextTrack);
 
@@ -572,20 +574,16 @@
                 isDragging = true;
                 const rect = progressBar.getBoundingClientRect();
                 const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-                if (audio.duration && isFinite(audio.duration)) {
-                    audio.currentTime = x * audio.duration;
-                    updateProgress();
-                }
+                audio.currentTime = x * audio.duration;
+                updateProgress();
             });
 
             window.addEventListener('mousemove', function(e) {
                 if (!isDragging || !trackLoaded) return;
                 const rect = progressBar.getBoundingClientRect();
                 const x = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
-                if (audio.duration && isFinite(audio.duration)) {
-                    audio.currentTime = x * audio.duration;
-                    updateProgress();
-                }
+                audio.currentTime = x * audio.duration;
+                updateProgress();
             });
 
             window.addEventListener('mouseup', function() {
@@ -598,10 +596,8 @@
                 const rect = progressBar.getBoundingClientRect();
                 const touch = e.touches[0];
                 const x = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
-                if (audio.duration && isFinite(audio.duration)) {
-                    audio.currentTime = x * audio.duration;
-                    updateProgress();
-                }
+                audio.currentTime = x * audio.duration;
+                updateProgress();
             });
 
             progressBar.addEventListener('touchmove', function(e) {
@@ -610,17 +606,15 @@
                 const rect = progressBar.getBoundingClientRect();
                 const touch = e.touches[0];
                 const x = Math.max(0, Math.min(1, (touch.clientX - rect.left) / rect.width));
-                if (audio.duration && isFinite(audio.duration)) {
-                    audio.currentTime = x * audio.duration;
-                    updateProgress();
-                }
+                audio.currentTime = x * audio.duration;
+                updateProgress();
             });
 
             progressBar.addEventListener('touchend', function() {
                 isDragging = false;
             });
 
-            loadTrack(0);
+            detectTracks();
         })();
     </script>
 
