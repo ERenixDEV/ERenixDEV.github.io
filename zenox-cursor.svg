@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="g" x1="4" y1="3" x2="25" y2="28" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#ffffff"/>
+      <stop offset="0.55" stop-color="#d9f5ff"/>
+      <stop offset="1" stop-color="#61c7ff"/>
+    </linearGradient>
+    <filter id="glow" x="-80%" y="-80%" width="260%" height="260%">
+      <feGaussianBlur stdDeviation="1.2" result="b"/>
+      <feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <path d="M4.5 2.8 27 14.2c1.15.58.98 2.28-.28 2.62l-8.1 2.18 4.65 8.05c.45.78.18 1.77-.6 2.22l-2.18 1.26c-.78.45-1.77.18-2.22-.6l-4.65-8.05-5.52 6.3c-.86.98-2.48.4-2.52-.9L4.5 2.8Z" fill="url(#g)" stroke="#0b1a2a" stroke-width="1.25" stroke-linejoin="round" filter="url(#glow)"/>
+  <path d="M7.2 6.2 24.1 14.8l-6.65 1.78-3.3 1.02-1.7-2.85L7.2 6.2Z" fill="#fff" opacity=".55"/>
+  <circle cx="25.2" cy="7" r="1.25" fill="#9fe2ff">
+    <animate attributeName="opacity" values=".25;1;.25" dur="1.15s" repeatCount="indefinite"/>
+    <animate attributeName="r" values=".8;1.45;.8" dur="1.15s" repeatCount="indefinite"/>
+  </circle>
+</svg>
