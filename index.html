@@ -49,8 +49,6 @@
             cursor: url('zenox-cursor.svg') 4 3, auto;
         }
 
-        /* عام عام عام  */
-        /* بمب عاتوم */
         .video-background {
             position: fixed;
             inset: 0;
@@ -260,7 +258,7 @@
             padding: 14px 16px 12px;
             display: flex;
             flex-direction: column;
-            gap: 8px;
+            gap: 10px;
             backdrop-filter: blur(4px);
             position: relative;
             z-index: 1;
@@ -316,24 +314,26 @@
         .music-controls {
             display: flex;
             align-items: center;
-            gap: 4px;
+            gap: 6px;
             flex-shrink: 0;
         }
 
         .music-btn {
             background: rgba(26, 34, 46, 0.6);
             border: none;
-            border-radius: 30px;
+            border-radius: 50%;
             width: 34px;
             height: 34px;
             display: flex;
             align-items: center;
             justify-content: center;
             color: #b0c0ce;
-            cursor: url('zenox-cursor.svg') 4 3, pointer;
+            cursor: pointer;
             transition: all 0.2s;
             backdrop-filter: blur(4px);
             border: 1px solid rgba(42, 52, 68, 0.2);
+            font-size: 16px;
+            user-select: none;
         }
 
         .music-btn:hover {
@@ -347,12 +347,22 @@
             width: 18px;
             height: 18px;
             fill: currentColor;
+            display: block;
+        }
+
+        .music-bottom {
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            width: 100%;
+            padding-top: 2px;
         }
 
         .music-progress-wrap {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            width: 100%;
         }
 
         .music-progress {
@@ -361,7 +371,7 @@
             background: rgba(42, 52, 68, 0.4);
             border-radius: 4px;
             position: relative;
-            cursor: url('zenox-cursor.svg') 4 3, pointer;
+            cursor: pointer;
         }
 
         .music-progress-fill {
@@ -430,12 +440,13 @@
             <div class="divider"></div>
 
             <div class="music-player">
+
                 <div class="music-top">
                     <div class="music-cover">
                         <img src="1.png" alt="cover" id="albumCover" />
                     </div>
                     <div class="music-info">
-                        <div class="music-title" id="trackTitle">Ech of EN*IX</div>
+                        <div class="music-title" id="trackTitle">THEEn8Ix.playlist</div>
                         <div class="music-artist" id="trackArtist">Zenox</div>
                     </div>
                     <div class="music-controls">
@@ -443,19 +454,25 @@
                             <svg viewBox="0 0 24 24"><path d="M6 6h2v12H6zm3.5 6l8.5 6V6z"/></svg>
                         </button>
                         <button class="music-btn" id="playBtn">
-                            <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            <svg viewBox="0 0 24 24" width="18" height="18">
+                                <polygon points="5,3 19,12 5,21" fill="currentColor"/>
+                            </svg>
                         </button>
                         <button class="music-btn" id="nextBtn">
                             <svg viewBox="0 0 24 24"><path d="M6 18l8.5-6L6 6v12zM16 6v12h2V6h-2z"/></svg>
                         </button>
                     </div>
                 </div>
-                <div class="music-progress-wrap">
-                    <div class="music-progress" id="progressBar">
-                        <div class="music-progress-fill" id="progressFill"></div>
+
+                <div class="music-bottom">
+                    <div class="music-progress-wrap">
+                        <div class="music-progress" id="progressBar">
+                            <div class="music-progress-fill" id="progressFill"></div>
+                        </div>
+                        <span class="music-time" id="timeDisplay">0:00 / 0:00</span>
                     </div>
-                    <span class="music-time" id="timeDisplay">0:09 / 2:27</span>
                 </div>
+
             </div>
 
             <div class="footer-note">
@@ -482,35 +499,37 @@
             let trackLoaded = false;
             let isDragging = false;
             let currentTrackIndex = 0;
-            let playlist = [];
 
-            function detectTracks() {
-                let index = 1;
-                function check() {
-                    const testAudio = new Audio();
-                    testAudio.preload = 'metadata';
-                    testAudio.src = index + '.mp3';
-                    testAudio.addEventListener('loadedmetadata', function() {
-                        playlist.push({
-                            title: 'THEEn8Ix' + '.playlist',
-                            artist: 'Zenox',
-                            src: index + '.mp3',
-                            cover: '1.png'
-                        });
-                        index++;
-                        check();
-                    }, { once: true });
-                    testAudio.addEventListener('error', function() {
-                        if (playlist.length) {
-                            loadTrack(0);
-                        }
-                    }, { once: true });
-                }
-                check();
+            // ===== همه آهنگ‌ها با همین اسم =====
+            const playlist = [
+                { title: 'THEEn8Ix.playlist', artist: 'Zenox', src: '1.mp3', cover: '1.png' },
+                { title: 'THEEn8Ix.playlist', artist: 'Zenox', src: '2.mp3', cover: '1.png' },
+                { title: 'THEEn8Ix.playlist', artist: 'Zenox', src: '3.mp3', cover: '1.png' },
+                { title: 'THEEn8Ix.playlist', artist: 'Zenox', src: '4.mp3', cover: '1.png' },
+                { title: 'THEEn8Ix.playlist', artist: 'Zenox', src: '5.mp3', cover: '1.png' }
+            ];
+
+            const validTracks = playlist.filter(t => t.src && t.src.trim() !== '');
+            
+            if (validTracks.length === 0) {
+                validTracks.push({ title: 'THEEn8Ix.playlist', artist: 'Zenox', src: '', cover: '1.png' });
+            }
+
+            function getPlayIcon() {
+                return `<svg viewBox="0 0 24 24" width="18" height="18">
+                    <polygon points="5,3 19,12 5,21" fill="currentColor"/>
+                </svg>`;
+            }
+
+            function getPauseIcon() {
+                return `<svg viewBox="0 0 24 24" width="18" height="18">
+                    <rect x="6" y="4" width="4" height="16" fill="currentColor" rx="1"/>
+                    <rect x="14" y="4" width="4" height="16" fill="currentColor" rx="1"/>
+                </svg>`;
             }
 
             function loadTrack(index) {
-                const track = playlist[index];
+                const track = validTracks[index];
                 if (!track) return;
                 currentTrackIndex = index;
                 audio.src = track.src;
@@ -522,7 +541,7 @@
                 timeDisplay.textContent = '0:00 / 0:00';
                 progressFill.style.width = '0%';
                 isPlaying = false;
-                playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
+                playBtn.innerHTML = getPlayIcon();
             }
 
             function formatTime(seconds) {
@@ -542,35 +561,41 @@
             }
 
             function togglePlay() {
-                if (!trackLoaded) return;
+                if (validTracks.length === 0) return;
+                if (!trackLoaded && audio.src) {
+                    audio.load();
+                    trackLoaded = true;
+                }
                 if (audio.paused) {
                     audio.play().then(() => {
-                        playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h-4V5h4z"/></svg>`;
+                        playBtn.innerHTML = getPauseIcon();
                         isPlaying = true;
-                    }).catch(() => {});
+                    }).catch(() => {
+                        trackLoaded = false;
+                    });
                 } else {
                     audio.pause();
-                    playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
+                    playBtn.innerHTML = getPlayIcon();
                     isPlaying = false;
                 }
             }
 
             function nextTrack() {
-                if (!playlist.length) return;
-                currentTrackIndex = (currentTrackIndex + 1) % playlist.length;
+                if (validTracks.length === 0) return;
+                currentTrackIndex = (currentTrackIndex + 1) % validTracks.length;
                 loadTrack(currentTrackIndex);
                 audio.play().then(() => {
-                    playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h-4V5h4z"/></svg>`;
+                    playBtn.innerHTML = getPauseIcon();
                     isPlaying = true;
                 }).catch(() => {});
             }
 
             function prevTrack() {
-                if (!playlist.length) return;
-                currentTrackIndex = (currentTrackIndex - 1 + playlist.length) % playlist.length;
+                if (validTracks.length === 0) return;
+                currentTrackIndex = (currentTrackIndex - 1 + validTracks.length) % validTracks.length;
                 loadTrack(currentTrackIndex);
                 audio.play().then(() => {
-                    playBtn.innerHTML = `<svg viewBox="0 0 24 24"><path d="M6 19h4V5h-4v14zm8-14v14h4V5h-4z"/></svg>`;
+                    playBtn.innerHTML = getPauseIcon();
                     isPlaying = true;
                 }).catch(() => {});
             }
@@ -586,7 +611,7 @@
                 nextTrack();
             });
 
-            audio.addEventListener('error', function() {
+            audio.addEventListener('error', function(e) {
                 trackLoaded = false;
                 timeDisplay.textContent = '0:00 / 0:00';
             });
@@ -640,7 +665,9 @@
                 isDragging = false;
             });
 
-            detectTracks();
+            if (validTracks.length > 0) {
+                loadTrack(0);
+            }
         })();
     </script>
 
